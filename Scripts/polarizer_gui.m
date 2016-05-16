@@ -1,3 +1,4 @@
+
 function varargout = polarizer_gui(varargin)
 % POLARIZER_GUI MATLAB code for polarizer_gui.fig
 %      POLARIZER_GUI, by itself, creates a new POLARIZER_GUI or raises the existing
@@ -22,7 +23,7 @@ function varargout = polarizer_gui(varargin)
 
 % Edit the above text to modify the response to help polarizer_gui
 
-% Last Modified by GUIDE v2.5 16-May-2016 20:35:01
+% Last Modified by GUIDE v2.5 16-May-2016 22:21:05
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,18 +79,42 @@ varargout{1} = handles.output;
 
 
 
-function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function angle_input_Callback(hObject, eventdata, handles)
+% hObject    handle to angle_input (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+% Hints: get(hObject,'String') returns contents of angle_input as text
+%        str2double(get(hObject,'String')) returns contents of angle_input as a double
 
-
+    try
+        angle = eval(get(handles.angle_input,'String'));
+        if ~isnumeric(t)
+            % t is not a number
+            set(handles.plot_button,'String','t is not numeric')
+        else
+            % All OK; Enable the Plot button with its original name
+            set(handles.plot_button,'String','Plot')
+            set(handles.plot_button,'Enable','on')
+            return
+        end
+    % Found an input error other than a bad expression
+    % Give the edit text box focus so user can correct the error
+    catch EM
+    
+    end
+    
+    delete(gca);
+    bindViews(angle);
+    
+    y = polarizer(5,angle);
+    text(16,5,0,num2str(y),'FontSize',18,'FontWeight','bold');
+    
+      
+    
 % --- Executes during object creation, after setting all properties.
-function edit1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
+function angle_input_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to angle_input (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -100,15 +125,19 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
+% --- Executes on button press in response_curve.
+function response_curve_Callback(hObject, eventdata, handles)
+% hObject    handle to response_curve (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+    figure;
+    poly_fit();
+
+    
+
 function bindViews(theta)
 
-    hold off
     r=3;
     teta=-pi:0.01:pi;
     y=r*cos(teta);

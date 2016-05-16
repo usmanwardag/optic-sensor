@@ -12,7 +12,12 @@ function p = poly_fit()
     for i = x
         y(i) = polarizer(1,x(i));
     end
-
+    
     p = polyfit(x,y,2);
-
+    
+    plot(x,y)
+    title('Response Curve')
+    xlabel('Angle')
+    ylabel('Amplitude Ratio')
+    
     
