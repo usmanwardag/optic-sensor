@@ -108,10 +108,13 @@ function angle_input_Callback(hObject, eventdata, handles)
     bindViews(angle);
     
     y = polarizer(5,angle);
+    if y<exp(-15)
+        y = 0;
+    end
+   
     text(16,5,0,num2str(y),'FontSize',18,'FontWeight','bold');
     
       
-    
 % --- Executes during object creation, after setting all properties.
 function angle_input_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to angle_input (see GCBO)
@@ -132,7 +135,7 @@ function response_curve_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
     figure;
-    poly_fit();
+    plot_response();
 
     
 
@@ -148,6 +151,7 @@ function bindViews(theta)
     end
 
     axis ([0 20 0 15 0 15])
+    grid on
 
     hold on
 
